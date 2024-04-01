@@ -1,0 +1,44 @@
+{# templates/pointage/index.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Pointage{% endblock %}
+
+{% block body %}
+<h1>Pointage pour {{ month }}/{{ year }}</h1>
+{#
+<a href="{{ path('pointage_new') }}" " class="btn btn-primary">Pointer</a>#}
+
+{% if isAdmin %}
+    <p>Affichage des pointages de tous les employés</p>
+{% else %}
+    <p>Votre pointage pour ce mois</p>
+{% endif %}
+
+<table>
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Présence</th>
+            {% if isAdmin %}<th>Employé</th>{% endif %}
+            <th>Catégorie d'Absence</th>
+            <th>Commentaires</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for pointage in pointages %}
+            <tr>
+                <td>{{ pointage.date|date('d/m/Y') }}</td>
+                <td>{{ pointage.isPresent ? 'Présent' : 'Absent' }}</td>
+                {% if isAdmin %}<td>{{ pointage.employee.name }}</td>{% endif %}
+                <td>{{ pointage.categorieAbsence }}</td>
+                <td>{{ pointage.comments }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">Aucun pointage trouvé</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
